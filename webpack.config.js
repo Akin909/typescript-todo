@@ -43,5 +43,11 @@ module.exports = {
       }
     ]
   },
-  plugins: [new htmlWebPackPlugin()]
+  plugins: [
+    new htmlWebPackPlugin({
+      template: './index.html',
+      inject: true,
+      filename: 'index.html'
+    })
+  ]
 };
