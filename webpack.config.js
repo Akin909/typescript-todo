@@ -7,7 +7,7 @@ module.exports = {
   context: __dirname + '/client/src', //root of project
   entry: ['babel-polyfill', './index.js'],
   output: {
-    path: __dirname + '/build',
+    path: __dirname + '/client/build',
     filename: 'bundle.js'
   },
 
@@ -39,7 +39,12 @@ module.exports = {
       {
         test: /\.jsx?$/,
         exclude: [/node_modules/],
-        use: [{ loader: 'babel-loader' }]
+        use: [
+          {
+            loader: 'babel-loader',
+            options: { presets: ['es2015', 'stage-0'] }
+          }
+        ]
       }
     ]
   },
