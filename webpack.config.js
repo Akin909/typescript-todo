@@ -23,13 +23,14 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
+        include: path.join(__dirname, 'client/src'),
         use: [
           'style-loader',
           {
-            loader: 'css-loader',
+            loader: 'typings-for-css-modules-loader',
             options: {
               modules: true,
-              root: '.'
+              namedExport: true
             }
           }
         ]
