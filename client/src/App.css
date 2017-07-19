@@ -1,0 +1,17 @@
+body,html {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+* {
+    box-sizing: inherit;
+}
+
+.nav {
+    height: 3em;
+    width: 100%;
+    background-color: skyblue;
+}
+
+

@@ -22,6 +22,19 @@ module.exports = {
   module: {
     rules: [
       {
+        test: /\.css$/,
+        use: [
+          'style-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              modules: true,
+              root: '.'
+            }
+          }
+        ]
+      },
+      {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
         use: ['file-loader']
       },
