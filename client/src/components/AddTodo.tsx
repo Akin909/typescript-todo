@@ -1,15 +1,21 @@
-import React from 'react';
-//import * as styles from './AddTodo.css';
+import React, { SFC } from 'react';
+import * as styles from './AddTodo.css';
+
 export interface Props {
-  addTodo: (input: Object) => void,
-  onChange: (e: React.FormEvent<HTMLInputElement>) => void
+  addTodo: () => void,
+  onChange: (e: React.SyntheticEvent<EventTarget>) => void
 }
 
-const AddTodo = ({ addTodo, onChange }: Props) => (
-  <div>
+const AddTodo: SFC<Props> = ({ addTodo, onChange }: Props) => (
+  <div className={styles.addTodoContainer}>
     <form onClick={addTodo}>
-      <input onChange={onChange} type="text" placeholder="Add a Title" />
-      <textarea onChange={onChange} />
+      <input
+        onChange={onChange}
+        id="title"
+        type="text"
+        placeholder="Add a Title"
+      />
+      <textarea onChange={e => onChange(e)} id="body" />
       <button>Add A Todo</button>
     </form>
   </div>

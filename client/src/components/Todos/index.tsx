@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import AddTodo from './../AddTodo';
 import * as styles from './Todos.css';
 
+console.log('styles', styles);
+
 interface todos {
   body: string,
   title: string,
@@ -15,7 +17,7 @@ interface State {
   todos: Array<todos>
 }
 
-class Todos extends Component<State> {
+class Todos extends Component<object, State> {
   state = {
     todos: [
       { title: 'Todo 1', body: 'A have to do a thing', completed: false }
@@ -25,8 +27,8 @@ class Todos extends Component<State> {
     completed: false
   };
 
-  handleChange = (e: React.FormEvent<HTMLInputElement>) => {
-    const { target: { value, id } } = e;
+  handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
+    const { currentTarget: { value, id } } = e;
     this.setState({ [id]: value });
   };
 
@@ -39,11 +41,11 @@ class Todos extends Component<State> {
 
   render() {
     return (
-      <div>
+      <div className={styles.todoContainer}>
         <h1>Todos</h1>
         <ul>
-          {this.props.todos.map(todo => (
-            <li>
+          {this.state.todos.map((todo, index) => (
+            <li key={index}>
               <h2>{todo.title}</h2>
               <p>{todo.body}</p>
               <input type="radio" checked={todo.completed} />

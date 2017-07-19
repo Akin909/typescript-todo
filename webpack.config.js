@@ -23,14 +23,15 @@ module.exports = {
     rules: [
       {
         test: /\.css$/,
-        include: path.join(__dirname, 'client/src'),
+        include: path.join(__dirname, 'client/src/components'),
         use: [
           'style-loader',
           {
             loader: 'typings-for-css-modules-loader',
             options: {
               modules: true,
-              namedExport: true
+              namedExport: true,
+              camelCase: true
             }
           }
         ]
@@ -76,6 +77,7 @@ module.exports = {
       template: './index.html',
       inject: true,
       filename: 'index.html'
-    })
+    }),
+    new webpack.WatchIgnorePlugin([/css\.d\.ts$/])
   ]
 };

@@ -1,1 +1,12 @@
 /*CSS*/
+.todo-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: beige;
+    width: 80%;
+    height: 70%;
+    border: none;
+    border-radius: 5px;
+    box-shadow: 0 1.5px 1px rgba(0, 0, 0, 0.5);
+}
