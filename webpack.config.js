@@ -5,18 +5,20 @@ module.exports = {
   //babel-polyfill allows use of features such as generators and async and
   //await
   context: __dirname + '/client/src', //root of project
-  entry: ['babel-polyfill', './index.js'],
+  entry: ['babel-polyfill', './index.tsx'],
   output: {
     path: __dirname + '/client/build',
     filename: 'bundle.js'
   },
-
+  resolve: {
+    // Add '.ts' and '.tsx' as resolvable extensions.
+    extensions: ['.ts', '.tsx', '.js', '.json']
+  },
   devtool: 'cheap-module-source-map',
 
   devServer: {
     contentBase: __dirname + '/client/src'
   },
-
   module: {
     rules: [
       {
@@ -35,6 +37,13 @@ module.exports = {
       {
         test: /\.(png|svg|jpg|gif)$/,
         use: ['file-loader']
+      },
+      {
+        test: /\.tsx?$/,
+        loader: 'ts-loader',
+        options: {
+          transpileOnly: true
+        }
       },
       {
         test: /\.jsx?$/,

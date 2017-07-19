@@ -21,9 +21,13 @@
     "webpack-dev-server": "^2.4.5"
   },
   "dependencies": {
+    "@types/react": "^15.0.38",
+    "@types/react-dom": "^15.5.1",
     "babel-polyfill": "^6.23.0",
     "babel-runtime": "^6.23.0",
     "react": "^15.5.4",
-    "react-dom": "^15.5.4"
+    "react-dom": "^15.5.4",
+    "ts-loader": "^2.3.0",
+    "typescript": "^2.4.1"
   }
 }
