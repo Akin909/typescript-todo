@@ -40,7 +40,7 @@ class Todos extends Component<object, State> {
     });
   };
 
-  render() {
+  public render() {
     return (
       <div className={styles.todoContainer}>
         <h1>Todos</h1>
