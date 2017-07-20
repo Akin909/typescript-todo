@@ -40,7 +40,7 @@ class Todos extends Component<{}, State> {
     }
   };
 
-  public addTodo = (e: React.MouseEvent<HTMLElement>): void => {
+  public addTodo = (e: React.FormEvent<HTMLInputElement>) => {
     e.preventDefault();
     const { title, completed, body } = this.state;
     const id = uuid()
@@ -51,19 +51,20 @@ class Todos extends Component<{}, State> {
 
   public editTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { todos } = this.state;
-    const { target: { id, name } } = e;
-    const selectedIndex = todos.findIndex((todo: Todo) => todo.id === id)
+    const { target: { id, name, value } } = e;
+    const selectedIndex: number = todos.findIndex((todo: Todo) => todo.id === id)
     const updated = {
       ...todos[selectedIndex],
-      [name]: 'fish'
+      [name]: value
     }
-    console.log('updated', updated);
-    const newState = {
+    const updatedTodos: Todo[] = [
       ...todos.slice(0, selectedIndex),
       updated,
-      ...todos.slice(selectedIndex)
-    }
+    ...todos.slice(selectedIndex + 1)
+    ]
+    this.setState({ todos: updatedTodos })
   }
+
 
   public render() {
     const { todos } = this.state
@@ -73,9 +74,11 @@ class Todos extends Component<{}, State> {
         <ul>
           {todos.map((todo: Todo) => (
             <li className={styles.todo} key={todo.id}>
-              <textarea name="title" id={todo.id} 
-              onChange={this.editTodo} 
-              defaultValue={todo.title} 
+              <textarea
+              name="title"
+              id={todo.id}
+              onChange={this.editTodo}
+              defaultValue={todo.title}
               className={`${styles.todoSpacing} ${styles.todoTextarea}`}/>
               <textarea defaultValue={todo.body} className={`${styles.todoSpacing} ${styles.todoTextarea}`} onChange={this.editTodo} name="body" id={todo.id}/>
               <input onClick={this.editTodo} name="completed" id={todo.id} className={styles.todoSpacing} type="radio" checked={todo.completed} />

@@ -20,14 +20,16 @@
 }
 
 .add-todo-input {
-    height: 2em;
+    height: 4em;
     border: none;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
     margin: 0.4em 0;
-    width: 30%;
+    width: 50%;
+    font-size: 1.5em;
+    text-align: center;
 }
 .add-todo-button {
 }
 .add-todo-textarea {
-    height: 30%;
+    height: 50%;
 }
