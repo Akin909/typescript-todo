@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import AddTodo from './../AddTodo';
 import * as styles from './Todos.css';
 
-console.log('styles', styles);
-
 interface todos {
   body: string,
   title: string,
@@ -29,22 +27,25 @@ class Todos extends Component<object, State> {
 
   handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
     const { currentTarget: { value, id } } = e;
-    this.setState({ [id]: value });
+    if (id !== 'todos') {
+      this.setState({ [id]: value });
+    }
   };
 
-  addTodo() {
+  addTodo = (e: React.FormEvent<HTMLInputElement>): void => {
+    e.preventDefault();
     const { title, completed, body } = this.state;
     this.setState({
       todos: [...this.state.todos, { title, completed, body }]
     });
-  }
+  };
 
   render() {
     return (
       <div className={styles.todoContainer}>
         <h1>Todos</h1>
         <ul>
-          {this.state.todos.map((todo, index) => (
+          {this.state.todos.map((todo: todos, index: number) => (
             <li key={index}>
               <h2>{todo.title}</h2>
               <p>{todo.body}</p>

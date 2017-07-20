@@ -1,5 +1,6 @@
 const path = require('path');
 const htmlWebPackPlugin = require('html-webpack-plugin');
+const webpack = require('webpack');
 
 module.exports = {
   //babel-polyfill allows use of features such as generators and async and

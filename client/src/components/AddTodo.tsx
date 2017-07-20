@@ -7,16 +7,19 @@ export interface Props {
 }
 
 const AddTodo: SFC<Props> = ({ addTodo, onChange }: Props) => (
-  <div className={styles.addTodoContainer}>
-    <form onClick={addTodo}>
+  <div className={`${styles.addTodoContainer} {styles.flex}`}>
+    <form onSubmit={addTodo} className={`${styles.addTodoForm} ${styles.flex}`}>
       <input
+        className={`${styles.addTodoInput}`}
         onChange={onChange}
         id="title"
         type="text"
         placeholder="Add a Title"
       />
-      <textarea onChange={e => onChange(e)} id="body" />
-      <button>Add A Todo</button>
+      <textarea onChange={onChange} id="body" />
+      <button className={`${styles.addTodoInput} ${styles.addTodoButton}`}>
+        Add A Todo
+      </button>
     </form>
   </div>
 );
