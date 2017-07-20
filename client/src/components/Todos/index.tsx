@@ -15,7 +15,8 @@ interface State {
   title: string,
   body: string,
   completed: boolean,
-  todos: Todo[]
+  todos: Todo[],
+  visibilityFilter: boolean
 }
 
 
@@ -27,6 +28,7 @@ class Todos extends Component<{}, State> {
     todos: [
       { title: 'World Domination', body: 'Do a thing, take over the world whatever', completed: false, id: uuid() }
     ],
+    visibilityFilter: false,
   };
 
   public handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
@@ -56,7 +58,7 @@ class Todos extends Component<{}, State> {
     const selectedIndex: number = todos.findIndex((todo: Todo) => todo.id === id)
     const updated = {
       ...todos[selectedIndex],
-      [name]: value
+      [name]: name === 'completed' ? !todos[selectedIndex].completed : value
     }
     const updatedTodos: Todo[] = [
       ...todos.slice(0, selectedIndex),
@@ -66,24 +68,44 @@ class Todos extends Component<{}, State> {
     this.setState({ todos: updatedTodos })
   }
 
+  public toggleVisibility: () => void = () => this.setState({ visibilityFilter: !this.state.visibilityFilter });
+
+
   public render() {
-    const { todos } = this.state
+    const { todos, visibilityFilter } = this.state
     return (
       <div className={styles.todoContainer}>
         <h1>Todos</h1>
+        <div>
+          <button onClick={this.toggleVisibility}>{visibilityFilter ? 'Show All':'Show Completed'}</button>
+        </div>
         <ul>
-          {todos.map((todo: Todo) => (
+        {todos.map((todo: Todo) => {
+          if(visibilityFilter && !todo.completed) {
+            return null;
+          }
+          return (
             <li className={styles.todo} key={todo.id}>
-              <textarea
-              name="title"
+            <textarea name="title"
               id={todo.id}
               onChange={this.editTodo}
               defaultValue={todo.title}
               className={`${styles.todoSpacing} ${styles.todoTextarea}`}/>
-              <textarea defaultValue={todo.body} className={`${styles.todoSpacing} ${styles.todoTextarea}`} onChange={this.editTodo} name="body" id={todo.id}/>
-              <input onClick={this.editTodo} name="completed" id={todo.id} className={styles.todoSpacing} type="radio" checked={todo.completed} />
+            <textarea
+              defaultValue={todo.body}
+              className={`${styles.todoSpacing} ${styles.todoTextarea}`}
+              onChange={this.editTodo}
+              name="body"
+              id={todo.id}/>
+            <input
+             onClick={this.editTodo}
+             name="completed"
+             id={todo.id}
+             className={styles.todoSpacing}
+             type="radio"
+             checked={todo.completed} />
             </li>
-          ))}
+        ) })}
         </ul>
         <AddTodo onChange={this.handleChange} addTodo={this.addTodo} />
       </div>
