@@ -1,24 +1,27 @@
 import React, { Component } from 'react';
-import uuid from 'uuid'
+import uuid from 'uuid';
 
 import AddTodo from './../AddTodo';
 import * as styles from './Todos.css';
 
 interface Todo {
-  body: string,
-  title: string,
-  completed: boolean,
-  id: string
+  body: string;
+  title: string;
+  completed: boolean;
+  id: string;
 }
 
 interface State {
-  title: string,
-  body: string,
-  completed: boolean,
-  todos: Todo[],
-  visibilityFilter: boolean
+  title: string;
+  body: string;
+  completed: boolean;
+  todos: Todo[];
+  visibilityFilter: boolean;
 }
 
+type TodoHandler =
+  | React.ChangeEvent<HTMLTextAreaElement>
+  | React.MouseEvent<HTMLInputElement>;
 
 class Todos extends Component<{}, State> {
   public state = {
@@ -26,14 +29,19 @@ class Todos extends Component<{}, State> {
     completed: false,
     title: '',
     todos: [
-      { title: 'World Domination', body: 'Do a thing, take over the world whatever', completed: false, id: uuid() }
+      {
+        body: 'Do a thing, take over the world whatever',
+        completed: false,
+        id: uuid(),
+        title: 'World Domination'
+      }
     ],
-    visibilityFilter: false,
+    visibilityFilter: false
   };
 
   public handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
     const { currentTarget: { value, id } } = e;
-    switch (id) {// TODO Dynamic access [id] not working
+    switch (id) { // TODO Dynamic access [id] not working
       case 'title':
         this.setState({ title: value });
       case 'body':
@@ -46,66 +54,78 @@ class Todos extends Component<{}, State> {
   public addTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { title, completed, body } = this.state;
-    const id = uuid()
+    const id = uuid();
     this.setState({
       todos: [...this.state.todos, { title, completed, body, id }]
     });
   };
 
-  public editTodo = (e: React.ChangeEvent<HTMLTextAreaElement> | React.MouseEvent<HTMLInputElement>) => {
+  public editTodo = (e: TodoHandler) => {
     const { todos } = this.state;
     const { currentTarget: { id, name, value } } = e;
-    const selectedIndex: number = todos.findIndex((todo: Todo) => todo.id === id)
+    const selectedIndex: number = todos.findIndex(
+      (todo: Todo) => todo.id === id
+    );
     const updated = {
       ...todos[selectedIndex],
       [name]: name === 'completed' ? !todos[selectedIndex].completed : value
-    }
+    };
     const updatedTodos: Todo[] = [
       ...todos.slice(0, selectedIndex),
       updated,
-    ...todos.slice(selectedIndex + 1)
-    ]
-    this.setState({ todos: updatedTodos })
-  }
+      ...todos.slice(selectedIndex + 1)
+    ];
+    this.setState({ todos: updatedTodos });
+  };
 
-  public toggleVisibility: () => void = () => this.setState({ visibilityFilter: !this.state.visibilityFilter });
-
+  public toggleVisibility: () => void = () =>
+    this.setState({ visibilityFilter: !this.state.visibilityFilter });
 
   public render() {
-    const { todos, visibilityFilter } = this.state
+    const { todos, visibilityFilter } = this.state;
     return (
       <div className={styles.todoContainer}>
         <h1>Todos</h1>
         <div>
-          <button onClick={this.toggleVisibility}>{visibilityFilter ? 'Show All':'Show Completed'}</button>
+          <button
+            className={styles.todoVisibility}
+            onClick={this.toggleVisibility}
+          >
+            {visibilityFilter ? 'Show All' : 'Show Completed'}
+          </button>
         </div>
-        <ul>
-        {todos.map((todo: Todo) => {
-          if(visibilityFilter && !todo.completed) {
-            return null;
-          }
-          return (
-            <li className={styles.todo} key={todo.id}>
-            <textarea name="title"
-              id={todo.id}
-              onChange={this.editTodo}
-              defaultValue={todo.title}
-              className={`${styles.todoSpacing} ${styles.todoTextarea}`}/>
-            <textarea
-              defaultValue={todo.body}
-              className={`${styles.todoSpacing} ${styles.todoTextarea}`}
-              onChange={this.editTodo}
-              name="body"
-              id={todo.id}/>
-            <input
-             onClick={this.editTodo}
-             name="completed"
-             id={todo.id}
-             className={styles.todoSpacing}
-             type="radio"
-             checked={todo.completed} />
-            </li>
-        ) })}
+        <ul className={styles.todoList}>
+          {todos.map((todo: Todo) => {
+            if (visibilityFilter && !todo.completed) {
+              return null;
+            }
+            return (
+              <li className={styles.todo} key={todo.id}>
+                <textarea
+                  name="title"
+                  id={todo.id}
+                  onChange={this.editTodo}
+                  defaultValue={todo.title}
+                  className={`${styles.todoSpacing} ${styles.todoTextarea}`}
+                />
+                <textarea
+                  defaultValue={todo.body}
+                  className={`${styles.todoSpacing} ${styles.todoTextarea}`}
+                  onChange={this.editTodo}
+                  name="body"
+                  id={todo.id}
+                />
+                <input
+                  onClick={this.editTodo}
+                  name="completed"
+                  id={todo.id}
+                  className={styles.todoSpacing}
+                  type="radio"
+                  checked={todo.completed}
+                />
+              </li>
+            );
+          })}
         </ul>
         <AddTodo onChange={this.handleChange} addTodo={this.addTodo} />
       </div>
