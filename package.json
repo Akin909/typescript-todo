@@ -10,6 +10,7 @@
     "build": "webpack -p"
   },
   "devDependencies": {
+    "@types/uuid": "^3.4.0",
     "babel-core": "^6.24.1",
     "babel-loader": "^7.0.0",
     "babel-plugin-transform-runtime": "^6.23.0",

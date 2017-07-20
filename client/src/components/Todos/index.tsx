@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import AddTodo from './../AddTodo';
 import uuid from 'uuid'
+
+import AddTodo from './../AddTodo';
 import * as styles from './Todos.css';
 
 interface Todo {
@@ -23,7 +24,7 @@ class Todos extends Component<{}, State> {
     completed: false,
     title: '',
     todos: [
-      { title: 'World Domination', body: 'Do a thing, take over the world whatever', completed: false }
+      { title: 'World Domination', body: 'Do a thing, take over the world whatever', completed: false, id: uuid() }
     ],
   };
 
@@ -39,13 +40,30 @@ class Todos extends Component<{}, State> {
     }
   };
 
-  public addTodo = (e: React.FormEvent<HTMLInputElement>): void => {
+  public addTodo = (e: React.MouseEvent<HTMLElement>): void => {
     e.preventDefault();
     const { title, completed, body } = this.state;
+    const id = uuid()
     this.setState({
-      todos: [...this.state.todos, { title, completed, body }]
+      todos: [...this.state.todos, { title, completed, body, id }]
     });
   };
+
+  public editTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { todos } = this.state;
+    const { target: { id, name } } = e;
+    const selectedIndex = todos.findIndex((todo: Todo) => todo.id === id)
+    const updated = {
+      ...todos[selectedIndex],
+      [name]: 'fish'
+    }
+    console.log('updated', updated);
+    const newState = {
+      ...todos.slice(0, selectedIndex),
+      updated,
+      ...todos.slice(selectedIndex)
+    }
+  }
 
   public render() {
     const { todos } = this.state
@@ -53,11 +71,14 @@ class Todos extends Component<{}, State> {
       <div className={styles.todoContainer}>
         <h1>Todos</h1>
         <ul>
-          {todos.map((todo: Todo, index: number) => (
-            <li className={styles.todo} key={index}>
-              <h2 className={styles.todoSpacing}>{todo.title}</h2>
-              <p className={styles.todoSpacing}>{todo.body}</p>
-              <input onClick={this.handleChange} id="completed" className={styles.todoSpacing} type="radio" checked={todo.completed} />
+          {todos.map((todo: Todo) => (
+            <li className={styles.todo} key={todo.id}>
+              <textarea name="title" id={todo.id} 
+              onChange={this.editTodo} 
+              defaultValue={todo.title} 
+              className={`${styles.todoSpacing} ${styles.todoTextarea}`}/>
+              <textarea defaultValue={todo.body} className={`${styles.todoSpacing} ${styles.todoTextarea}`} onChange={this.editTodo} name="body" id={todo.id}/>
+              <input onClick={this.editTodo} name="completed" id={todo.id} className={styles.todoSpacing} type="radio" checked={todo.completed} />
             </li>
           ))}
         </ul>
