@@ -3,7 +3,7 @@ import * as styles from './AddTodo.css';
 
 export interface Props {
   addTodo: () => void,
-  onChange: (e: React.FormEvent<HTMLInputElement>) => void
+  onChange: (e: any) => void
 }
 
 const AddTodo: SFC<Props> = ({ addTodo, onChange }: Props) => (

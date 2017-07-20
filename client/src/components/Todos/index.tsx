@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import AddTodo from './../AddTodo';
 import * as styles from './Todos.css';
 
-interface todos {
+interface Todo {
   body: string,
   title: string,
   completed: boolean
@@ -12,27 +12,32 @@ interface State {
   title: string,
   body: string,
   completed: boolean,
-  todos: Array<todos>
+  todos: Todo[]
 }
 
-class Todos extends Component<object, State> {
-  state = {
+class Todos extends Component<{}, State> {
+  public state = {
+    body: '',
+    completed: false,
+    title: '',
     todos: [
       { title: 'Todo 1', body: 'A have to do a thing', completed: false }
     ],
-    body: '',
-    title: '',
-    completed: false
   };
 
-  handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
-    const { currentTarget: { value, id } } = e;
-    if (id !== 'todos') {
-      this.setState({ [id]: value });
+  public handleChange = (e: React.ChangeEvent<HTMLInputElement>): void => {
+    const { target: { value, id } } = e;
+    switch (id) {// TODO Dynamic access [id] not working
+      case 'title':
+        this.setState({ title: value });
+      case 'body':
+        this.setState({ body: value });
+      default:
+        return;
     }
   };
 
-  addTodo = (e: React.FormEvent<HTMLInputElement>): void => {
+  public addTodo = (e: React.ChangeEvent<HTMLInputElement>): void => {
     e.preventDefault();
     const { title, completed, body } = this.state;
     this.setState({
@@ -45,7 +50,7 @@ class Todos extends Component<object, State> {
       <div className={styles.todoContainer}>
         <h1>Todos</h1>
         <ul>
-          {this.state.todos.map((todo: todos, index: number) => (
+          {this.state.todos.map((todo: Todo, index: number) => (
             <li key={index}>
               <h2>{todo.title}</h2>
               <p>{todo.body}</p>
