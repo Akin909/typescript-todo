@@ -2,8 +2,8 @@ import React, { SFC } from 'react';
 import * as styles from './AddTodo.css';
 
 export interface Props {
-  addTodo: () => void,
-  onChange: (e: any) => void
+  addTodo: (e: React.FormEvent<HTMLFormElement>) => void,
+  onChange: (e: React.FormEvent<HTMLFormElement>) => void
 }
 
 const AddTodo: SFC<Props> = ({ addTodo, onChange }: Props) => (
@@ -16,7 +16,11 @@ const AddTodo: SFC<Props> = ({ addTodo, onChange }: Props) => (
         type="text"
         placeholder="Add a Title"
       />
-      <textarea onChange={onChange} id="body" />
+      <textarea
+        className={`${styles.addTodoInput} ${styles.addTodoTextarea}`}
+        onChange={onChange}
+        id="body"
+      />
       <button className={`${styles.addTodoInput} ${styles.addTodoButton}`}>
         Add A Todo
       </button>
