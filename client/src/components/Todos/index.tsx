@@ -18,6 +18,7 @@ interface State {
   todos: Todo[]
 }
 
+
 class Todos extends Component<{}, State> {
   public state = {
     body: '',
@@ -40,7 +41,7 @@ class Todos extends Component<{}, State> {
     }
   };
 
-  public addTodo = (e: React.FormEvent<HTMLInputElement>) => {
+  public addTodo = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { title, completed, body } = this.state;
     const id = uuid()
@@ -49,9 +50,9 @@ class Todos extends Component<{}, State> {
     });
   };
 
-  public editTodo = (e: React.ChangeEvent<HTMLInputElement>) => {
+  public editTodo = (e: React.ChangeEvent<HTMLTextAreaElement> | React.MouseEvent<HTMLInputElement>) => {
     const { todos } = this.state;
-    const { target: { id, name, value } } = e;
+    const { currentTarget: { id, name, value } } = e;
     const selectedIndex: number = todos.findIndex((todo: Todo) => todo.id === id)
     const updated = {
       ...todos[selectedIndex],
@@ -64,7 +65,6 @@ class Todos extends Component<{}, State> {
     ]
     this.setState({ todos: updatedTodos })
   }
-
 
   public render() {
     const { todos } = this.state
