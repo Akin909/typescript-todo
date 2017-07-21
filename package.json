@@ -7,7 +7,8 @@
   "license": "MIT",
   "scripts": {
     "start": "webpack-dev-server",
-    "build": "webpack -p"
+    "build": "webpack -p",
+    "dev:server":"concurrently 'tsc -w' 'nodemon -e js,html, css build/index.ts'"
   },
   "devDependencies": {
     "@types/uuid": "^3.4.0",
