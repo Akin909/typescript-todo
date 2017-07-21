@@ -49,14 +49,7 @@ class Todos extends Component<{}, State> {
 
   public handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
     const { currentTarget: { value, id } } = e;
-    switch (id) { // TODO Dynamic access [id] not working
-      case 'title':
-        this.setState({ title: value });
-      case 'body':
-        this.setState({ body: value });
-      default:
-        return;
-    }
+    this.setState({ [id]: value });
   };
 
   public addTodo = (e: React.FormEvent<HTMLFormElement>) => {
