@@ -3,6 +3,7 @@ import uuid from 'uuid';
 
 import AddTodo from './../AddTodo';
 import * as styles from './Todos.css';
+import './Todos.css';
 
 interface Todo {
   body: string;
@@ -38,6 +39,13 @@ class Todos extends Component<{}, State> {
     ],
     visibilityFilter: false
   };
+  public totalTodos: (t: Todo[]) => number = todos =>
+    todos.reduce((acc, todo) => {
+      if (todo.completed) {
+        acc++;
+      }
+      return acc;
+    }, 0);
 
   public handleChange = (e: React.FormEvent<HTMLInputElement>): void => {
     const { currentTarget: { value, id } } = e;
@@ -85,15 +93,6 @@ class Todos extends Component<{}, State> {
     const { todos, visibilityFilter } = this.state;
     return (
       <div className={styles.todoContainer}>
-        <h1>Todos</h1>
-        <div>
-          <button
-            className={styles.todoVisibility}
-            onClick={this.toggleVisibility}
-          >
-            {visibilityFilter ? 'Show All' : 'Show Completed'}
-          </button>
-        </div>
         <ul className={styles.todoList}>
           {todos.map((todo: Todo) => {
             if (visibilityFilter && !todo.completed) {
@@ -119,7 +118,7 @@ class Todos extends Component<{}, State> {
                   onClick={this.editTodo}
                   name="completed"
                   id={todo.id}
-                  className={styles.todoSpacing}
+                  className={`${styles.todoSpacing} ${styles.todoCheckbox}`}
                   type="radio"
                   checked={todo.completed}
                 />
@@ -127,6 +126,17 @@ class Todos extends Component<{}, State> {
             );
           })}
         </ul>
+        <div>
+          <h2>
+            {'Completed: ' + this.totalTodos(todos)}
+          </h2>
+          <button
+            className={styles.todoVisibility}
+            onClick={this.toggleVisibility}
+          >
+            {visibilityFilter ? 'Show All' : 'Show Completed'}
+          </button>
+        </div>
         <AddTodo onChange={this.handleChange} addTodo={this.addTodo} />
       </div>
     );

@@ -2,11 +2,13 @@ import React, { SFC } from 'react';
 import * as styles from './AddTodo.css';
 
 export interface Props {
-  addTodo: (e: React.FormEvent<HTMLFormElement>) => void,
-  onChange: (e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>) => void
+  addTodo: (e: React.FormEvent<HTMLFormElement>) => void;
+  onChange: (
+    e: React.FormEvent<HTMLInputElement | HTMLTextAreaElement>
+  ) => void;
 }
 
-const AddTodo: SFC<Props> = ({ addTodo, onChange }: Props) => (
+const AddTodo: SFC<Props> = ({ addTodo, onChange }: Props) =>
   <div className={`${styles.addTodoContainer} {styles.flex}`}>
     <form onSubmit={addTodo} className={`${styles.addTodoForm} ${styles.flex}`}>
       <input
@@ -25,7 +27,6 @@ const AddTodo: SFC<Props> = ({ addTodo, onChange }: Props) => (
         Add A Todo
       </button>
     </form>
-  </div>
-);
+  </div>;
 
 export default AddTodo;

@@ -20,7 +20,7 @@
 }
 
 .add-todo-input {
-    height: 4em;
+    height: 3em;
     border: none;
     box-shadow: 0 1px 1px rgba(0, 0, 0, 0.5);
     margin: 0.4em 0;
@@ -31,5 +31,7 @@
 .add-todo-button {
 }
 .add-todo-textarea {
-    height: 50%;
+    text-align: center;
+    height: 10em;
+    resize: none;
 }
