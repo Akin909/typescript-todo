@@ -112,8 +112,8 @@ class Todos extends Component<{}, State> {
                   name="completed"
                   id={todo.id}
                   className={`${styles.todoSpacing} ${styles.todoCheckbox}`}
-                  type="radio"
-                  checked={todo.completed}
+                  type="checkbox"
+                  value={todo.completed ? '1' : '0'}
                 />
               </li>
             );
