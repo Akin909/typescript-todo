@@ -52,6 +52,7 @@
     height: 2.5em;
     border-radius: 5px;
 }
+
 .todo-checkbox label:after {
     opacity: 0.2;
     content: '';

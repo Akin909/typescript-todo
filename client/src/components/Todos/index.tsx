@@ -31,14 +31,21 @@ class Todos extends Component<{}, State> {
     title: '',
     todos: [
       {
-        body: 'Do a thing, take over the world whatever',
+        body: '',
         completed: false,
-        id: uuid(),
-        title: 'World Domination'
-      }
+        id: '',
+        title: '',
+      },
     ],
-    visibilityFilter: false
+    visibilityFilter: false,
   };
+
+  public async componentDidMount() {
+    const res: Response = await fetch('http://localhost:4001/');
+    const todos: Todo[] = await res.json();
+    this.setState({ todos });
+  }
+
   public totalTodos: (t: Todo[]) => number = todos =>
     todos.reduce((acc, todo) => {
       if (todo.completed) {
@@ -52,30 +59,38 @@ class Todos extends Component<{}, State> {
     this.setState({ [id]: value });
   };
 
-  public addTodo = (e: React.FormEvent<HTMLFormElement>) => {
+  public addTodo = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const { title, completed, body } = this.state;
-    const id = uuid();
+    const res: Response = await fetch('http://localhost:4001/todo', {
+      method: 'POST',
+      body: JSON.stringify({ title, completed, body }),
+    });
+    const addedTodo: Todo = await res.json();
     this.setState({
-      todos: [...this.state.todos, { title, completed, body, id }]
+      todos: [...this.state.todos, addedTodo],
     });
   };
 
   public editTodo = (e: TodoHandler) => {
     const { todos } = this.state;
     const { currentTarget: { id, name, value } } = e;
+
     const selectedIndex: number = todos.findIndex(
       (todo: Todo) => todo.id === id
     );
+
     const updated = {
       ...todos[selectedIndex],
-      [name]: name === 'completed' ? !todos[selectedIndex].completed : value
+      [name]: name === 'completed' ? !todos[selectedIndex].completed : value,
     };
+
     const updatedTodos: Todo[] = [
       ...todos.slice(0, selectedIndex),
       updated,
-      ...todos.slice(selectedIndex + 1)
+      ...todos.slice(selectedIndex + 1),
     ];
+
     this.setState({ todos: updatedTodos });
   };
 
@@ -84,6 +99,7 @@ class Todos extends Component<{}, State> {
 
   public render() {
     const { todos, visibilityFilter } = this.state;
+    console.log('todos', todos);
     return (
       <div className={styles.todoContainer}>
         <ul className={styles.todoList}>
