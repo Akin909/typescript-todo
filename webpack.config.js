@@ -1,6 +1,7 @@
+const webpack = require('webpack');
 const path = require('path');
 const htmlWebPackPlugin = require('html-webpack-plugin');
-const webpack = require('webpack');
+var DashboardPlugin = require('webpack-dashboard/plugin');
 
 module.exports = {
   //babel-polyfill allows use of features such as generators and async and
@@ -9,16 +10,16 @@ module.exports = {
   entry: ['babel-polyfill', './index.tsx'],
   output: {
     path: __dirname + '/client/build',
-    filename: 'bundle.js'
+    filename: 'bundle.js',
   },
   resolve: {
     // Add '.ts' and '.tsx' as resolvable extensions.
-    extensions: ['.ts', '.tsx', '.js', '.json']
+    extensions: ['.ts', '.tsx', '.js', '.json'],
   },
   devtool: 'cheap-module-source-map',
 
   devServer: {
-    contentBase: __dirname + '/client/src'
+    contentBase: __dirname + '/client/src',
   },
   module: {
     rules: [
@@ -32,34 +33,38 @@ module.exports = {
             options: {
               modules: true,
               namedExport: true,
-              camelCase: true
-            }
-          }
-        ]
+              camelCase: true,
+            },
+          },
+        ],
       },
       {
         test: /\.(woff|woff2|eot|ttf|otf)$/,
-        use: ['file-loader']
+        use: ['file-loader'],
       },
       {
         test: /\.(png|jpg)$/,
         use: [
           {
             loader: 'url-loader',
-            options: { limit: 10000 }
-          }
-        ]
+            options: { limit: 10000 },
+          },
+        ],
       },
       {
         test: /\.(png|svg|jpg|gif)$/,
-        use: ['file-loader']
+        use: [
+          {
+            loader: 'file-loader',
+          },
+        ],
       },
       {
         test: /\.tsx?$/,
         loader: 'ts-loader',
         options: {
-          transpileOnly: true
-        }
+          transpileOnly: true,
+        },
       },
       {
         test: /\.jsx?$/,
@@ -67,18 +72,21 @@ module.exports = {
         use: [
           {
             loader: 'babel-loader',
-            options: { presets: ['es2015', 'stage-0'] }
-          }
-        ]
-      }
-    ]
+            options: { presets: ['es2015', 'stage-0'] },
+          },
+        ],
+      },
+    ],
   },
   plugins: [
     new htmlWebPackPlugin({
       template: './index.html',
       inject: true,
-      filename: 'index.html'
+      filename: 'index.html',
     }),
-    new webpack.WatchIgnorePlugin([/css\.d\.ts$/])
-  ]
+    new webpack.WatchIgnorePlugin([/css\.d\.ts$/]),
+    // webpack-dev-server enhancement plugins
+    new DashboardPlugin(),
+    new webpack.HotModuleReplacementPlugin(),
+  ],
 };

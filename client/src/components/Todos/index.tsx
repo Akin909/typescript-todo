@@ -3,7 +3,9 @@ import uuid from 'uuid';
 
 import AddTodo from './../AddTodo';
 import * as styles from './Todos.css';
-import './Todos.css';
+
+// Need require syntax for images
+const trashcan = require('./../../assets/trash-icon.png');
 
 interface Todo {
   body: string;
@@ -99,7 +101,6 @@ class Todos extends Component<{}, State> {
 
   public render() {
     const { todos, visibilityFilter } = this.state;
-    console.log('todos', todos);
     return (
       <div className={styles.todoContainer}>
         <ul className={styles.todoList}>
@@ -109,6 +110,7 @@ class Todos extends Component<{}, State> {
             }
             return (
               <li className={styles.todo} key={todo.id}>
+                <img src={trashcan} alt="Trash Can Icon" />
                 <textarea
                   name="title"
                   id={todo.id}
